@@ -26,15 +26,22 @@ public class AjaxService {
 	}
 
 
-	public void updatePass(int roomNo, String newPass) throws Exception {
+	public int updatePass(int roomNo, String newPass) throws Exception {
+			
+		if (chatdao.getRoomType(roomNo).equals("Normal")) { // 일반방일 때 비번을 설정할 경우
+			Map<String, String> params = new HashMap<>();
+			params.put("roomType", "Secret");
+			params.put("roomNo", roomNo + "");
+			chatdao.changeRoomType(params);
+		}
 		
-      Map<String, String> params = new HashMap<>();
-      
-      params.put("roomNo", roomNo + "");
-      params.put("newPass", newPass);
-      
-      chatdao.updatePass(params);
-		   
+		Map<String, String> params = new HashMap<>();
+
+		params.put("roomNo", roomNo + "");
+		params.put("newPass", newPass);
+
+		return chatdao.updatePass(params);
+
 	}
 	
 	 public String getUserList(int roomNo) throws Exception {
